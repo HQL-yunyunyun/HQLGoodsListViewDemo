@@ -16,6 +16,16 @@
 		4A8ABF031E6D718100A573F1 /* HQLGoodsListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABF021E6D718100A573F1 /* HQLGoodsListView.m */; };
 		4A8ABF061E6E99A300A573F1 /* UITableView+EmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABF051E6E99A300A573F1 /* UITableView+EmptyView.m */; };
 		4A8ABF091E6EBB7500A573F1 /* HQLEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABF081E6EBB7500A573F1 /* HQLEmptyView.m */; };
+		4A8ABF191E6FA08600A573F1 /* UIView+ZXFrameExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABF0F1E6FA08600A573F1 /* UIView+ZXFrameExtension.m */; };
+		4A8ABF1A1E6FA08600A573F1 /* HMCategoriesModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABF121E6FA08600A573F1 /* HMCategoriesModel.m */; };
+		4A8ABF1B1E6FA08600A573F1 /* HMGoodsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABF141E6FA08600A573F1 /* HMGoodsModel.m */; };
+		4A8ABF1C1E6FA08600A573F1 /* HMGoodsListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABF171E6FA08600A573F1 /* HMGoodsListCell.m */; };
+		4A8ABF1D1E6FA08600A573F1 /* HMGoodsListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A8ABF181E6FA08600A573F1 /* HMGoodsListCell.xib */; };
+		4A8ABF221E6FA16100A573F1 /* HMSku_propertiesModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABF1F1E6FA16100A573F1 /* HMSku_propertiesModel.m */; };
+		4A8ABF231E6FA16100A573F1 /* HMSkuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABF211E6FA16100A573F1 /* HMSkuModel.m */; };
+		4A8ABF261E6FA1B500A573F1 /* HMNumButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABF251E6FA1B500A573F1 /* HMNumButton.m */; };
+		4A8ABF2B1E6FA1F200A573F1 /* HQLExpandableButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABF281E6FA1F200A573F1 /* HQLExpandableButton.m */; };
+		4A8ABF2C1E6FA1F200A573F1 /* HQLNumberButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABF2A1E6FA1F200A573F1 /* HQLNumberButton.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +45,25 @@
 		4A8ABF051E6E99A300A573F1 /* UITableView+EmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+EmptyView.m"; sourceTree = "<group>"; };
 		4A8ABF071E6EBB7500A573F1 /* HQLEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HQLEmptyView.h; sourceTree = "<group>"; };
 		4A8ABF081E6EBB7500A573F1 /* HQLEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HQLEmptyView.m; sourceTree = "<group>"; };
+		4A8ABF0E1E6FA08600A573F1 /* UIView+ZXFrameExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ZXFrameExtension.h"; sourceTree = "<group>"; };
+		4A8ABF0F1E6FA08600A573F1 /* UIView+ZXFrameExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ZXFrameExtension.m"; sourceTree = "<group>"; };
+		4A8ABF111E6FA08600A573F1 /* HMCategoriesModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMCategoriesModel.h; sourceTree = "<group>"; };
+		4A8ABF121E6FA08600A573F1 /* HMCategoriesModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMCategoriesModel.m; sourceTree = "<group>"; };
+		4A8ABF131E6FA08600A573F1 /* HMGoodsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMGoodsModel.h; sourceTree = "<group>"; };
+		4A8ABF141E6FA08600A573F1 /* HMGoodsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMGoodsModel.m; sourceTree = "<group>"; };
+		4A8ABF161E6FA08600A573F1 /* HMGoodsListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMGoodsListCell.h; sourceTree = "<group>"; };
+		4A8ABF171E6FA08600A573F1 /* HMGoodsListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMGoodsListCell.m; sourceTree = "<group>"; };
+		4A8ABF181E6FA08600A573F1 /* HMGoodsListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HMGoodsListCell.xib; sourceTree = "<group>"; };
+		4A8ABF1E1E6FA16100A573F1 /* HMSku_propertiesModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMSku_propertiesModel.h; sourceTree = "<group>"; };
+		4A8ABF1F1E6FA16100A573F1 /* HMSku_propertiesModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMSku_propertiesModel.m; sourceTree = "<group>"; };
+		4A8ABF201E6FA16100A573F1 /* HMSkuModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMSkuModel.h; sourceTree = "<group>"; };
+		4A8ABF211E6FA16100A573F1 /* HMSkuModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMSkuModel.m; sourceTree = "<group>"; };
+		4A8ABF241E6FA1B500A573F1 /* HMNumButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMNumButton.h; sourceTree = "<group>"; };
+		4A8ABF251E6FA1B500A573F1 /* HMNumButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMNumButton.m; sourceTree = "<group>"; };
+		4A8ABF271E6FA1F200A573F1 /* HQLExpandableButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HQLExpandableButton.h; sourceTree = "<group>"; };
+		4A8ABF281E6FA1F200A573F1 /* HQLExpandableButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HQLExpandableButton.m; sourceTree = "<group>"; };
+		4A8ABF291E6FA1F200A573F1 /* HQLNumberButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HQLNumberButton.h; sourceTree = "<group>"; };
+		4A8ABF2A1E6FA1F200A573F1 /* HQLNumberButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HQLNumberButton.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +96,7 @@
 		4A8ABEE91E6D381500A573F1 /* HQLGoodsListViewDemo */ = {
 			isa = PBXGroup;
 			children = (
+				4A8ABF0C1E6FA08600A573F1 /* Lib */,
 				4A8ABEED1E6D381500A573F1 /* AppDelegate.h */,
 				4A8ABEEE1E6D381500A573F1 /* AppDelegate.m */,
 				4A8ABEF01E6D381500A573F1 /* ViewController.h */,
@@ -92,6 +122,56 @@
 				4A8ABEEB1E6D381500A573F1 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4A8ABF0C1E6FA08600A573F1 /* Lib */ = {
+			isa = PBXGroup;
+			children = (
+				4A8ABF0D1E6FA08600A573F1 /* Lib */,
+				4A8ABF101E6FA08600A573F1 /* Model */,
+				4A8ABF151E6FA08600A573F1 /* View */,
+			);
+			path = Lib;
+			sourceTree = "<group>";
+		};
+		4A8ABF0D1E6FA08600A573F1 /* Lib */ = {
+			isa = PBXGroup;
+			children = (
+				4A8ABF0E1E6FA08600A573F1 /* UIView+ZXFrameExtension.h */,
+				4A8ABF0F1E6FA08600A573F1 /* UIView+ZXFrameExtension.m */,
+			);
+			path = Lib;
+			sourceTree = "<group>";
+		};
+		4A8ABF101E6FA08600A573F1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4A8ABF1E1E6FA16100A573F1 /* HMSku_propertiesModel.h */,
+				4A8ABF1F1E6FA16100A573F1 /* HMSku_propertiesModel.m */,
+				4A8ABF201E6FA16100A573F1 /* HMSkuModel.h */,
+				4A8ABF211E6FA16100A573F1 /* HMSkuModel.m */,
+				4A8ABF111E6FA08600A573F1 /* HMCategoriesModel.h */,
+				4A8ABF121E6FA08600A573F1 /* HMCategoriesModel.m */,
+				4A8ABF131E6FA08600A573F1 /* HMGoodsModel.h */,
+				4A8ABF141E6FA08600A573F1 /* HMGoodsModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		4A8ABF151E6FA08600A573F1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4A8ABF271E6FA1F200A573F1 /* HQLExpandableButton.h */,
+				4A8ABF281E6FA1F200A573F1 /* HQLExpandableButton.m */,
+				4A8ABF291E6FA1F200A573F1 /* HQLNumberButton.h */,
+				4A8ABF2A1E6FA1F200A573F1 /* HQLNumberButton.m */,
+				4A8ABF241E6FA1B500A573F1 /* HMNumButton.h */,
+				4A8ABF251E6FA1B500A573F1 /* HMNumButton.m */,
+				4A8ABF161E6FA08600A573F1 /* HMGoodsListCell.h */,
+				4A8ABF171E6FA08600A573F1 /* HMGoodsListCell.m */,
+				4A8ABF181E6FA08600A573F1 /* HMGoodsListCell.xib */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -154,6 +234,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4A8ABEFA1E6D381500A573F1 /* LaunchScreen.storyboard in Resources */,
+				4A8ABF1D1E6FA08600A573F1 /* HMGoodsListCell.xib in Resources */,
 				4A8ABEF71E6D381500A573F1 /* Assets.xcassets in Resources */,
 				4A8ABEF51E6D381500A573F1 /* Main.storyboard in Resources */,
 			);
@@ -168,8 +249,17 @@
 			files = (
 				4A8ABF091E6EBB7500A573F1 /* HQLEmptyView.m in Sources */,
 				4A8ABEF21E6D381500A573F1 /* ViewController.m in Sources */,
+				4A8ABF261E6FA1B500A573F1 /* HMNumButton.m in Sources */,
+				4A8ABF2B1E6FA1F200A573F1 /* HQLExpandableButton.m in Sources */,
+				4A8ABF1B1E6FA08600A573F1 /* HMGoodsModel.m in Sources */,
+				4A8ABF221E6FA16100A573F1 /* HMSku_propertiesModel.m in Sources */,
+				4A8ABF231E6FA16100A573F1 /* HMSkuModel.m in Sources */,
+				4A8ABF1A1E6FA08600A573F1 /* HMCategoriesModel.m in Sources */,
+				4A8ABF191E6FA08600A573F1 /* UIView+ZXFrameExtension.m in Sources */,
 				4A8ABF031E6D718100A573F1 /* HQLGoodsListView.m in Sources */,
 				4A8ABEEF1E6D381500A573F1 /* AppDelegate.m in Sources */,
+				4A8ABF2C1E6FA1F200A573F1 /* HQLNumberButton.m in Sources */,
+				4A8ABF1C1E6FA08600A573F1 /* HMGoodsListCell.m in Sources */,
 				4A8ABF061E6E99A300A573F1 /* UITableView+EmptyView.m in Sources */,
 				4A8ABEEC1E6D381500A573F1 /* main.m in Sources */,
 			);
