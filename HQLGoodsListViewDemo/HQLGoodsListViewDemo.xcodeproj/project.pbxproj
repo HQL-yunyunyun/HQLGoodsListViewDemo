@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A597E2A1E9B98220064E9DC /* HQLEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A597E291E9B98220064E9DC /* HQLEmptyView.m */; };
 		4A8ABEEC1E6D381500A573F1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABEEB1E6D381500A573F1 /* main.m */; };
 		4A8ABEEF1E6D381500A573F1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABEEE1E6D381500A573F1 /* AppDelegate.m */; };
 		4A8ABEF21E6D381500A573F1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABEF11E6D381500A573F1 /* ViewController.m */; };
@@ -15,7 +16,6 @@
 		4A8ABEFA1E6D381500A573F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4A8ABEF81E6D381500A573F1 /* LaunchScreen.storyboard */; };
 		4A8ABF031E6D718100A573F1 /* HQLGoodsListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABF021E6D718100A573F1 /* HQLGoodsListView.m */; };
 		4A8ABF061E6E99A300A573F1 /* UITableView+EmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABF051E6E99A300A573F1 /* UITableView+EmptyView.m */; };
-		4A8ABF091E6EBB7500A573F1 /* HQLEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABF081E6EBB7500A573F1 /* HQLEmptyView.m */; };
 		4A8ABF191E6FA08600A573F1 /* UIView+ZXFrameExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABF0F1E6FA08600A573F1 /* UIView+ZXFrameExtension.m */; };
 		4A8ABF1A1E6FA08600A573F1 /* HMCategoriesModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABF121E6FA08600A573F1 /* HMCategoriesModel.m */; };
 		4A8ABF1B1E6FA08600A573F1 /* HMGoodsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABF141E6FA08600A573F1 /* HMGoodsModel.m */; };
@@ -29,6 +29,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4A597E281E9B98220064E9DC /* HQLEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HQLEmptyView.h; sourceTree = "<group>"; };
+		4A597E291E9B98220064E9DC /* HQLEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HQLEmptyView.m; sourceTree = "<group>"; };
 		4A8ABEE71E6D381500A573F1 /* HQLGoodsListViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HQLGoodsListViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A8ABEEB1E6D381500A573F1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4A8ABEED1E6D381500A573F1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -43,8 +45,6 @@
 		4A8ABF021E6D718100A573F1 /* HQLGoodsListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HQLGoodsListView.m; sourceTree = "<group>"; };
 		4A8ABF041E6E99A300A573F1 /* UITableView+EmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+EmptyView.h"; sourceTree = "<group>"; };
 		4A8ABF051E6E99A300A573F1 /* UITableView+EmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+EmptyView.m"; sourceTree = "<group>"; };
-		4A8ABF071E6EBB7500A573F1 /* HQLEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HQLEmptyView.h; sourceTree = "<group>"; };
-		4A8ABF081E6EBB7500A573F1 /* HQLEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HQLEmptyView.m; sourceTree = "<group>"; };
 		4A8ABF0E1E6FA08600A573F1 /* UIView+ZXFrameExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ZXFrameExtension.h"; sourceTree = "<group>"; };
 		4A8ABF0F1E6FA08600A573F1 /* UIView+ZXFrameExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ZXFrameExtension.m"; sourceTree = "<group>"; };
 		4A8ABF111E6FA08600A573F1 /* HMCategoriesModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMCategoriesModel.h; sourceTree = "<group>"; };
@@ -110,8 +110,8 @@
 				4A8ABF021E6D718100A573F1 /* HQLGoodsListView.m */,
 				4A8ABF041E6E99A300A573F1 /* UITableView+EmptyView.h */,
 				4A8ABF051E6E99A300A573F1 /* UITableView+EmptyView.m */,
-				4A8ABF071E6EBB7500A573F1 /* HQLEmptyView.h */,
-				4A8ABF081E6EBB7500A573F1 /* HQLEmptyView.m */,
+				4A597E281E9B98220064E9DC /* HQLEmptyView.h */,
+				4A597E291E9B98220064E9DC /* HQLEmptyView.m */,
 			);
 			path = HQLGoodsListViewDemo;
 			sourceTree = "<group>";
@@ -247,10 +247,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A8ABF091E6EBB7500A573F1 /* HQLEmptyView.m in Sources */,
 				4A8ABEF21E6D381500A573F1 /* ViewController.m in Sources */,
 				4A8ABF261E6FA1B500A573F1 /* HMNumButton.m in Sources */,
 				4A8ABF2B1E6FA1F200A573F1 /* HQLExpandableButton.m in Sources */,
+				4A597E2A1E9B98220064E9DC /* HQLEmptyView.m in Sources */,
 				4A8ABF1B1E6FA08600A573F1 /* HMGoodsModel.m in Sources */,
 				4A8ABF221E6FA16100A573F1 /* HMSku_propertiesModel.m in Sources */,
 				4A8ABF231E6FA16100A573F1 /* HMSkuModel.m in Sources */,

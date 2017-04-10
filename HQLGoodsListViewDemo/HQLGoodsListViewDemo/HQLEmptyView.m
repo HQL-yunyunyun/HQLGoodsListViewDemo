@@ -56,7 +56,8 @@
     self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x, self.titleLabel.frame.origin.y, [self imageViewWidth], self.titleLabel.frame.size.height);
     [self.titleLabel sizeToFit];
     CGFloat titleLabelX = (self.frame.size.width - self.titleLabel.frame.size.width) * 0.5;
-    CGFloat titleLabelY = (self.frame.size.width - self.titleLabel.frame.size.height) * 0.5;
+//    CGFloat titleLabelY = (self.frame.size.width - self.titleLabel.frame.size.height) * 0.5;
+    CGFloat titleLabelY = CGRectGetMaxY(self.imageView.frame);
     
     [self.titleLabel setFrame:CGRectMake(titleLabelX, titleLabelY, self.titleLabel.frame.size.width, self.titleLabel.frame.size.height)];
 }
@@ -79,7 +80,13 @@
 
 - (void)setImage:(UIImage *)image {
     _image = image;
+    self.imageView.image = image;
     [self setImageViewFrameWithImage:image];
+}
+
+- (void)setTitle:(NSString *)title {
+    _title = title;
+    self.titleLabel.text = title;
 }
 
 #pragma mark - getter
