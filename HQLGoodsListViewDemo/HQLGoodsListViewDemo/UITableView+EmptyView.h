@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "HQLEmptyView.h"
 
+@class HQLEmptyView;
+
 @interface UITableView (EmptyView)
 
 @property (strong, nonatomic) UIImage *emptyViewImage;
