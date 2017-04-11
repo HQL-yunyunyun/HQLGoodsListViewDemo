@@ -95,7 +95,7 @@ static const NSString *HQLEmptyViewKey = @"HQLEmptyViewKey";
 }
 
 - (void)setEmptyViewTitle:(NSString *)emptyViewTitle {
-    self.emptyViewTitle = emptyViewTitle;
+    self.emptyView.title = emptyViewTitle;
     objc_setAssociatedObject(self, &HQLEmptyViewTitleKey, emptyViewTitle, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 

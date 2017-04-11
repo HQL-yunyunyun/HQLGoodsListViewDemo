@@ -11,6 +11,8 @@
 #import "HMGoodsModel.h"
 #import "HMGoodsListCell.h"
 
+#import "UITableView+EmptyView.h"
+
 #import "UIView+ZXFrameExtension.h"
 
 #define ZXColor( r, g, b) [UIColor colorWithRed:(r / 255.0) green:(g / 255.0) blue:(b / 255.0) alpha:1]
@@ -199,6 +201,12 @@
         [rightTableView registerNib:[UINib nibWithNibName:@"HMGoodsListCell" bundle:nil] forCellReuseIdentifier:kRightCellReuseID];
         rightTableView.separatorInset = UIEdgeInsetsMake(0, 10, 0, 0);
         _rightTableView = rightTableView;
+        
+        rightTableView.emptyTapBlock = ^{
+            NSLog(@"tap right table view");
+        };
+        rightTableView.isUseEmptyView = YES;
+        rightTableView.emptyViewTitle = @"仓库为空哦，请添加商品啦，喵";
     }
     return _rightTableView;
 }
@@ -209,6 +217,12 @@
         UITableView *leftTableView = [self setupTableViewWithX:0 width:leftTableViewWidth];
         leftTableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
         _leftTableView = leftTableView;
+        
+        leftTableView.emptyTapBlock = ^{
+            NSLog(@"tap left table view");
+        };
+        leftTableView.isUseEmptyView = YES;
+        leftTableView.emptyViewTitle = @"唔。。。为空，请添加商品哦";
     }
     return _leftTableView;
 }
