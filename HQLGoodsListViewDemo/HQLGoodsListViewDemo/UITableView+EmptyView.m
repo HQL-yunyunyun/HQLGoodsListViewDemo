@@ -14,6 +14,7 @@ static const NSString *HQLEmptyViewTitleKey = @"HQLEmptyViewTitleKey";
 static const NSString *HQLEmptyViewTapBlockKey= @"HQLEmptyViewTapBlockKey";
 static const NSString *HQLIsUseEmptyViewKey = @"HQLIsUseEmptyViewKey";
 static const NSString *HQLEmptyViewKey = @"HQLEmptyViewKey";
+static const NSString *HQLReloadDataCompleteBlock = @"HQLReloadDataCompleteBlock";
 
 #define kEmptyViewTag 1101
 
@@ -49,36 +50,34 @@ static const NSString *HQLEmptyViewKey = @"HQLEmptyViewKey";
     [self HQL_layoutSubViews];
     
     // 设置empty的frame
-    self.emptyView.frame = self.bounds;
-    NSLog(@"empty view :%@", self.emptyView);
+    self.emptyView.frame = self.frame;
 }
 
 - (void)HQL_reloadData {
     [self HQL_reloadData];
     
-    if (!self.isUseEmptyView) {
-        self.emptyView.hidden = YES;
-        return;
-    }
     // 如果 row为0 且headerView和footerView都为空 --- 可以判断sectionHeaderHeight 和 sectionFooterHeight
+    BOOL isNoHeaderOrFooterView = YES;
     if (self.sectionHeaderHeight > 1 || self.sectionFooterHeight > 1) {
-        self.emptyView.hidden = YES;
-        return;
+        isNoHeaderOrFooterView = NO; // 没有headerView或FooterView
     }
     
+    BOOL isDataEmpty = YES;
     NSInteger row = 0;
     for (int i = 0; i < self.numberOfSections; i++) {
         row += [self numberOfRowsInSection:i];
     }
     if (row > 0) { // row不为0 表明有数据
-        self.emptyView.hidden = YES;
-        return;
+        isDataEmpty = NO;
     }
     
-    // 到这就可以表明没有数据了 --- > 设置emptyView
-    [self.emptyView setHidden:NO];
+    // 只有符合这三个条件才会显示emptyView
+    [self.emptyView setHidden:!(self.isUseEmptyView && isNoHeaderOrFooterView && isDataEmpty)];
     
-    NSLog(@"empty view :%@", self.emptyView);
+    if (self.reloadDataCompleteBlock) {
+        // 只有符合这两个条件才表示没有数据 ---> row的总数量为0 且 headerView和FooterView的高都不大于1
+        self.reloadDataCompleteBlock((isDataEmpty && isNoHeaderOrFooterView));
+    }
 }
 
 #pragma mark - setter 
@@ -106,6 +105,10 @@ static const NSString *HQLEmptyViewKey = @"HQLEmptyViewKey";
 
 - (void)setIsUseEmptyView:(BOOL)isUseEmptyView {
     objc_setAssociatedObject(self, &HQLIsUseEmptyViewKey, [NSNumber numberWithBool:isUseEmptyView], OBJC_ASSOCIATION_ASSIGN);
+}
+
+- (void)setReloadDataCompleteBlock:(void (^)(BOOL))reloadDataCompleteBlock {
+    objc_setAssociatedObject(self, &HQLReloadDataCompleteBlock, reloadDataCompleteBlock, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
 #pragma mark - getter
@@ -136,14 +139,17 @@ static const NSString *HQLEmptyViewKey = @"HQLEmptyViewKey";
         emtpyView.tag = kEmptyViewTag;
         
         emtpyView.hidden = YES;
-//        emtpyView.image = [UIImage imageNamed:<#(nonnull NSString *)#>]
         emtpyView.title = @"没有数据诶，喵";
         
-        [self addSubview:emtpyView];
+        [self.superview addSubview:emtpyView];
         [self setEmptyView:emtpyView];
     }
     
     return objc_getAssociatedObject(self, &HQLEmptyViewKey);
+}
+
+- (void (^)(BOOL))reloadDataCompleteBlock {
+    return objc_getAssociatedObject(self, &HQLReloadDataCompleteBlock);
 }
 
 @end

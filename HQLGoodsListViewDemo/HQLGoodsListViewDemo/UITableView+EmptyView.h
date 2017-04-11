@@ -17,6 +17,8 @@
 @property (copy, nonatomic) NSString *emptyViewTitle;
 @property (copy, nonatomic) void(^emptyTapBlock)();
 
+@property (copy, nonatomic) void(^reloadDataCompleteBlock)(BOOL dataEmpty);
+
 @property (strong, nonatomic) HQLEmptyView *emptyView;
 
 /**
