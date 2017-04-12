@@ -69,7 +69,7 @@
 
 - (void)setTitleLabelFrame {
     
-    self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x, self.titleLabel.frame.origin.y, self.width - (2 * kMargin), self.titleLabel.frame.size.height);
+    self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x, self.titleLabel.frame.origin.y, self.frame.size.width - (2 * kMargin), self.titleLabel.frame.size.height);
     [self.titleLabel sizeToFit];
     CGFloat titleLabelX = (self.frame.size.width - self.titleLabel.frame.size.width) * 0.5;
 //    CGFloat titleLabelY = CGRectGetMaxY(self.imageView.frame) + kMargin;
