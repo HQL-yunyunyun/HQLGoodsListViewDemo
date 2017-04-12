@@ -14,4 +14,10 @@
 @property (copy, nonatomic) NSString *title;
 @property (copy, nonatomic) void(^tapBlock)();
 
+@property (strong, nonatomic) NSData *gifData; // 显示GIF
+
+- (void)startGifAnimaion;
+
+- (void)endGifAnimation;
+
 @end

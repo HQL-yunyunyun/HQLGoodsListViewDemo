@@ -8,12 +8,20 @@
 
 #import "HQLEmptyView.h"
 
+#import <WebKit/WebKit.h>
+
 #define kMargin 10
 
 @interface HQLEmptyView ()
 
 @property (strong, nonatomic) UIImageView *imageView;
 @property (strong, nonatomic) UILabel *titleLabel;
+
+//@property (strong, nonatomic) WKWebView *animationWebView; // 显示git的webView
+
+@property (strong, nonatomic) UIWebView *animationWebView;
+
+@property (assign, nonatomic) BOOL isAnimation;
 
 @end
 
@@ -50,6 +58,11 @@
         titleLabel = self.titleLabel;
     }
     
+//    WKWebView *animationWebView = nil;
+    if (self.gifData) {
+        [self setAnimationWebViewFrame];
+    }
+    
     // 计算y
     CGFloat totalHeight = CGRectGetHeight(imageView.frame) + CGRectGetHeight(titleLabel.frame) + kMargin;
     CGFloat imageViewY = (self.frame.size.height - totalHeight) * 0.5;
@@ -67,15 +80,19 @@
     }
 }
 
+- (void)setAnimationWebViewFrame {
+    CGFloat webViewW = [self imageViewWidth];
+    CGFloat webViewH = [self imageViewWidth];
+    CGFloat webViewX = (self.frame.size.width - webViewW) * 0.5;
+    CGFloat webViewY = (self.frame.size.height - webViewH) * 0.5;
+    self.animationWebView.frame = CGRectMake(webViewX, webViewY, webViewW, webViewH);
+}
+
 - (void)setTitleLabelFrame {
     
     self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x, self.titleLabel.frame.origin.y, self.frame.size.width - (2 * kMargin), self.titleLabel.frame.size.height);
     [self.titleLabel sizeToFit];
     CGFloat titleLabelX = (self.frame.size.width - self.titleLabel.frame.size.width) * 0.5;
-//    CGFloat titleLabelY = CGRectGetMaxY(self.imageView.frame) + kMargin;
-//    if (titleLabelY <= kMargin) {
-//        titleLabelY = (self.frame.size.height - self.titleLabel.frame.size.height) * 0.5;
-//    }
     
     [self.titleLabel setFrame:CGRectMake(titleLabelX, 0, self.titleLabel.frame.size.width, self.titleLabel.frame.size.height)];
 }
@@ -86,12 +103,34 @@
     CGFloat imageViewW = [self imageViewWidth];
     CGFloat imageViewH = (imageViewW * image.size.height) / image.size.width;
     CGFloat imageViewX = (self.frame.size.width - imageViewW) * 0.5;
-//    CGFloat imageViewY = (self.frame.size.height - imageViewH) * 0.5;
     self.imageView.frame = CGRectMake(imageViewX, 0, imageViewW, imageViewH);
 }
 
 - (CGFloat)imageViewWidth {
-    return  self.frame.size.width * 0.7;
+    return  self.frame.size.width * 0.6;
+}
+
+- (void)startGifAnimaion {
+    if (!self.gifData || self.isAnimation) {
+        return;
+    }
+    self.isAnimation = YES;
+    [self.animationWebView setHidden:NO];
+    self.animationWebView.opaque = YES;
+    [self.imageView setHidden:YES];
+    [self.titleLabel setHidden:YES];
+    
+    [self.animationWebView loadData:self.gifData MIMEType:@"image/gif" textEncodingName:nil baseURL:nil];
+}
+
+- (void)endGifAnimation {
+    [self.animationWebView removeFromSuperview];
+    self.animationWebView = nil;
+    
+    self.isAnimation = NO;
+    
+    [self.imageView setHidden:NO];
+    [self.titleLabel setHidden:NO];
 }
 
 #pragma mark - setter 
@@ -129,6 +168,21 @@
         [self addSubview:_imageView];
     }
     return _imageView;
+}
+
+- (UIWebView *)animationWebView {
+    if (!_animationWebView) {
+        _animationWebView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, [self imageViewWidth], [self imageViewWidth])];
+        _animationWebView.scalesPageToFit = YES;
+        _animationWebView.scrollView.scrollEnabled = NO;
+//        _animationWebView.scrollView.showsVerticalScrollIndicator = NO;
+//        _animationWebView.scrollView.showsHorizontalScrollIndicator = NO;
+        _animationWebView.opaque=NO;
+        [_animationWebView setBackgroundColor:[UIColor clearColor]];
+        [_animationWebView setHidden:YES];
+        [self addSubview:_animationWebView];
+    }
+    return _animationWebView;
 }
 
 @end

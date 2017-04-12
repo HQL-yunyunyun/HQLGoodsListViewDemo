@@ -202,8 +202,12 @@
         rightTableView.separatorInset = UIEdgeInsetsMake(0, 10, 0, 0);
         _rightTableView = rightTableView;
         
+        rightTableView.emptyView.gifData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"common_loading_larger@3" ofType:@"gif"]];
+        
+        __weak typeof(rightTableView) weakRightTableView = rightTableView;
         rightTableView.emptyTapBlock = ^{
             NSLog(@"tap right table view");
+            [weakRightTableView.emptyView startGifAnimaion];
         };
         rightTableView.isUseEmptyView = YES;
         rightTableView.emptyViewTitle = @"仓库为空哦，请添加商品啦，喵";
