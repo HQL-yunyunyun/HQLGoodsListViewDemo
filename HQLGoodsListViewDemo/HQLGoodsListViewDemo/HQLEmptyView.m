@@ -8,6 +8,8 @@
 
 #import "HQLEmptyView.h"
 
+#define kMargin 10
+
 @interface HQLEmptyView ()
 
 @property (strong, nonatomic) UIImageView *imageView;
@@ -36,12 +38,25 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
+    UIImageView *imageView = nil;
     if (self.image) {
         [self setImageViewFrameWithImage:self.image];
+        imageView = self.imageView;
     }
+    
+    UILabel *titleLabel = nil;
     if (self.title) {
         [self setTitleLabelFrame];
+        titleLabel = self.titleLabel;
     }
+    
+    // 计算y
+    CGFloat totalHeight = CGRectGetHeight(imageView.frame) + CGRectGetHeight(titleLabel.frame) + kMargin;
+    CGFloat imageViewY = (self.frame.size.height - totalHeight) * 0.5;
+    CGFloat titleLabelY = imageViewY + totalHeight - CGRectGetHeight(titleLabel.frame);
+    
+    imageView.frame = CGRectMake(imageView.frame.origin.x, imageViewY, imageView.frame.size.width, imageView.frame.size.height);
+    titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabelY, titleLabel.frame.size.width, titleLabel.frame.size.height);
 }
 
 #pragma mark - event
@@ -53,16 +68,16 @@
 }
 
 - (void)setTitleLabelFrame {
-    self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x, self.titleLabel.frame.origin.y, [self imageViewWidth], self.titleLabel.frame.size.height);
+    
+    self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x, self.titleLabel.frame.origin.y, self.width - (2 * kMargin), self.titleLabel.frame.size.height);
     [self.titleLabel sizeToFit];
     CGFloat titleLabelX = (self.frame.size.width - self.titleLabel.frame.size.width) * 0.5;
-//    CGFloat titleLabelY = (self.frame.size.width - self.titleLabel.frame.size.height) * 0.5;
-    CGFloat titleLabelY = CGRectGetMaxY(self.imageView.frame) + 5;
-    if (titleLabelY <= 5) {
-        titleLabelY = (self.frame.size.height - self.titleLabel.frame.size.height) * 0.5;
-    }
+//    CGFloat titleLabelY = CGRectGetMaxY(self.imageView.frame) + kMargin;
+//    if (titleLabelY <= kMargin) {
+//        titleLabelY = (self.frame.size.height - self.titleLabel.frame.size.height) * 0.5;
+//    }
     
-    [self.titleLabel setFrame:CGRectMake(titleLabelX, titleLabelY, self.titleLabel.frame.size.width, self.titleLabel.frame.size.height)];
+    [self.titleLabel setFrame:CGRectMake(titleLabelX, 0, self.titleLabel.frame.size.width, self.titleLabel.frame.size.height)];
 }
 
 - (void)setImageViewFrameWithImage:(UIImage *)image {
@@ -71,8 +86,8 @@
     CGFloat imageViewW = [self imageViewWidth];
     CGFloat imageViewH = (imageViewW * image.size.height) / image.size.width;
     CGFloat imageViewX = (self.frame.size.width - imageViewW) * 0.5;
-    CGFloat imageViewY = (self.frame.size.height - imageViewH) * 0.5;
-    self.imageView.frame = CGRectMake(imageViewX, imageViewY, imageViewW, imageViewH);
+//    CGFloat imageViewY = (self.frame.size.height - imageViewH) * 0.5;
+    self.imageView.frame = CGRectMake(imageViewX, 0, imageViewW, imageViewH);
 }
 
 - (CGFloat)imageViewWidth {
