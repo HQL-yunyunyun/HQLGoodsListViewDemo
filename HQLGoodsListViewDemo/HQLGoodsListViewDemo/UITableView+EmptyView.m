@@ -15,6 +15,10 @@ static const NSString *HQLEmptyViewTapBlockKey= @"HQLEmptyViewTapBlockKey";
 static const NSString *HQLIsUseEmptyViewKey = @"HQLIsUseEmptyViewKey";
 static const NSString *HQLEmptyViewKey = @"HQLEmptyViewKey";
 static const NSString *HQLReloadDataCompleteBlock = @"HQLReloadDataCompleteBlock";
+static const NSString *HQLEmptyViewGifData = @"HQLEmptyViewGifData";
+static const NSString *HQLEmptyViewGifImageArray = @"HQLEmptyViewGifImageArray";
+static const NSString *HQLEmptyViewAnimationTitle = @"HQLEmptyViewAnimationTitle";
+static const NSString *HQLEmptyViewTitleColor = @"HQLEmptyViewTitleColor";
 
 #define kEmptyViewTag 1101
 
@@ -32,19 +36,9 @@ static const NSString *HQLReloadDataCompleteBlock = @"HQLReloadDataCompleteBlock
     Method layoutToMethod = class_getInstanceMethod([self class], @selector(HQL_layoutSubViews));
     method_exchangeImplementations(layoutFromMethod, layoutToMethod);
     
-//    Method deallocFromMethod = class_getInstanceMethod([self class], @selector(dealloc));
-//    Method deallocToMethod = class_getInstanceMethod([self class], @selector(HQL_dealloc));
-    
 }
 
 #pragma mark - method swizzling
-
-//- (void)HQL_dealloc {
-//    [self HQL_dealloc];
-//    
-//    [self.emptyView removeFromSuperview];
-//    self.emptyView = nil;
-//}
 
 - (void)HQL_layoutSubViews {
     [self HQL_layoutSubViews];
@@ -78,6 +72,14 @@ static const NSString *HQLReloadDataCompleteBlock = @"HQLReloadDataCompleteBlock
         // 只有符合这两个条件才表示没有数据 ---> row的总数量为0 且 headerView和FooterView的高都不大于1
         self.reloadDataCompleteBlock((isDataEmpty && isNoHeaderOrFooterView));
     }
+}
+
+- (void)emptyViewStartAnimation {
+    [self.emptyView startAnimaion];
+}
+
+- (void)emptyViewStopAnimation {
+    [self.emptyView stopAnimation];
 }
 
 #pragma mark - setter 

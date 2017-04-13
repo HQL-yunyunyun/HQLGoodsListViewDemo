@@ -13,11 +13,16 @@
 @property (strong, nonatomic) UIImage *image;
 @property (copy, nonatomic) NSString *title;
 @property (copy, nonatomic) void(^tapBlock)();
+@property (copy, nonatomic) NSString *animationTitle;
 
 @property (strong, nonatomic) NSData *gifData; // 显示GIF
 
-- (void)startGifAnimaion;
+@property (strong, nonatomic) NSArray <UIImage *>*gifImageArray; // 帧动画
 
-- (void)endGifAnimation;
+@property (strong, nonatomic) UIColor *titleColor;
+
+- (void)startAnimaion;
+
+- (void)stopAnimation;
 
 @end

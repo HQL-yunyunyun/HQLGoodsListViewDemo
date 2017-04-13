@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4A15F9041E9E2C63006D8F3C /* UIImageView+GifAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A15F9031E9E2C63006D8F3C /* UIImageView+GifAnimation.m */; };
+		4A15F9081E9F5E59006D8F3C /* HQLTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A15F9071E9F5E59006D8F3C /* HQLTimer.m */; };
 		4A597E2A1E9B98220064E9DC /* HQLEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A597E291E9B98220064E9DC /* HQLEmptyView.m */; };
 		4A597E2F1E9E1AB10064E9DC /* common_loading_larger@3.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4A597E2E1E9E1AB10064E9DC /* common_loading_larger@3.gif */; };
 		4A8ABEEC1E6D381500A573F1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8ABEEB1E6D381500A573F1 /* main.m */; };
@@ -33,6 +34,8 @@
 /* Begin PBXFileReference section */
 		4A15F9021E9E2C63006D8F3C /* UIImageView+GifAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+GifAnimation.h"; sourceTree = "<group>"; };
 		4A15F9031E9E2C63006D8F3C /* UIImageView+GifAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+GifAnimation.m"; sourceTree = "<group>"; };
+		4A15F9061E9F5E59006D8F3C /* HQLTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HQLTimer.h; sourceTree = "<group>"; };
+		4A15F9071E9F5E59006D8F3C /* HQLTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HQLTimer.m; sourceTree = "<group>"; };
 		4A597E281E9B98220064E9DC /* HQLEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HQLEmptyView.h; sourceTree = "<group>"; };
 		4A597E291E9B98220064E9DC /* HQLEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HQLEmptyView.m; sourceTree = "<group>"; };
 		4A597E2E1E9E1AB10064E9DC /* common_loading_larger@3.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "common_loading_larger@3.gif"; sourceTree = "<group>"; };
@@ -82,6 +85,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4A15F9051E9F5E59006D8F3C /* HQLTimer */ = {
+			isa = PBXGroup;
+			children = (
+				4A15F9061E9F5E59006D8F3C /* HQLTimer.h */,
+				4A15F9071E9F5E59006D8F3C /* HQLTimer.m */,
+			);
+			path = HQLTimer;
+			sourceTree = "<group>";
+		};
 		4A8ABEDE1E6D381400A573F1 = {
 			isa = PBXGroup;
 			children = (
@@ -145,6 +157,7 @@
 		4A8ABF0D1E6FA08600A573F1 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				4A15F9051E9F5E59006D8F3C /* HQLTimer */,
 				4A8ABF0E1E6FA08600A573F1 /* UIView+ZXFrameExtension.h */,
 				4A8ABF0F1E6FA08600A573F1 /* UIView+ZXFrameExtension.m */,
 			);
@@ -261,6 +274,7 @@
 				4A15F9041E9E2C63006D8F3C /* UIImageView+GifAnimation.m in Sources */,
 				4A8ABF2B1E6FA1F200A573F1 /* HQLExpandableButton.m in Sources */,
 				4A597E2A1E9B98220064E9DC /* HQLEmptyView.m in Sources */,
+				4A15F9081E9F5E59006D8F3C /* HQLTimer.m in Sources */,
 				4A8ABF1B1E6FA08600A573F1 /* HMGoodsModel.m in Sources */,
 				4A8ABF221E6FA16100A573F1 /* HMSku_propertiesModel.m in Sources */,
 				4A8ABF231E6FA16100A573F1 /* HMSkuModel.m in Sources */,

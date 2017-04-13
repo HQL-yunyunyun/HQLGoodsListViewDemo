@@ -12,7 +12,7 @@
 
 @implementation UIImageView (GifAnimation)
 
-- (void)setGifData:(NSData *)gifData {
+- (void)setGifData:(NSData *)gifData completeBlock:(void (^)(CGFloat, CGFloat))completeBlock {
     CGImageSourceRef source = CGImageSourceCreateWithData(CFBridgingRetain(gifData), NULL);
     //获取gif文件中图片的个数
     size_t count = CGImageSourceGetCount(source);
@@ -28,7 +28,7 @@
         [imageArray addObject:[UIImage imageWithCGImage:image]];
         CGImageRelease(image);
         //获取图片信息
-        NSDictionary * info = (__bridge_transfer NSDictionary*)CGImageSourceCopyPropertiesAtIndex(source, i, NULL);
+        NSDictionary * info = (__bridge NSDictionary*)CGImageSourceCopyPropertiesAtIndex(source, i, NULL);
         if (i == 0) {
             gifWidth = [[info objectForKey:(__bridge NSString *)kCGImagePropertyPixelWidth] floatValue];
             gifHeight = [[info objectForKey:(__bridge NSString *)kCGImagePropertyPixelHeight] floatValue];
@@ -40,18 +40,14 @@
     }
     CFRelease(source);
     
-    // 根据gif的比例来改变imageView的frame
-    CGFloat originWidth = self.frame.size.width;
-    CGFloat originHeight = self.frame.size.height;
-    CGPoint centerPoint = self.center;
-    CGFloat targetHeight = (gifHeight * originWidth) / originHeight;
-    self.frame = CGRectMake(0, 0, originWidth, targetHeight);
-    self.center = centerPoint;
-    
     // 设置帧动画
     self.animationImages = [NSArray arrayWithArray:imageArray];
     self.animationDuration = allTime;
     self.animationRepeatCount = 0; // 表示无限播放
+    
+    if (completeBlock) {
+        completeBlock(gifWidth, gifHeight);
+    }
 }
 
 @end

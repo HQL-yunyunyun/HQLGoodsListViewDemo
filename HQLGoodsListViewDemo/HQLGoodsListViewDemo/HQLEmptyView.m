@@ -7,21 +7,35 @@
 //
 
 #import "HQLEmptyView.h"
-
 #import <WebKit/WebKit.h>
+#import "UIImageView+GifAnimation.h"
+#import "HQLTimer.h"
 
 #define kMargin 10
+#define kAnimationLabelTitle @"正在加载"
+#define kGifPerImageTime 0.1 // 每一帧的时间
+
+static NSInteger timerCount = 0;
+
+typedef enum {
+    HQLEmptyViewDefault , // 默认状态 ---> 显示 imageView 和 titleLabel
+    HQLEmptyViewLoadingAndShowGif , // 加载动画 ---> 显示gifImageView 和 animationLabel
+    HQLEmptyViewLoadingAndShowIndicator , // 加载动画(如果没有设置gif,则默认显示这个状态) ---> 显示指示View(菊花) 和 animationLabel
+} HQLEmptyViewStatus; // 记录当前显示的状态
 
 @interface HQLEmptyView ()
 
 @property (strong, nonatomic) UIImageView *imageView;
 @property (strong, nonatomic) UILabel *titleLabel;
 
-//@property (strong, nonatomic) WKWebView *animationWebView; // 显示git的webView
+@property (strong, nonatomic) UIImageView *gifImageView;
+@property (strong, nonatomic) UIActivityIndicatorView *indicatorView;
 
-@property (strong, nonatomic) UIWebView *animationWebView;
+@property (strong, nonatomic) UILabel *animationLabel;
 
-@property (assign, nonatomic) BOOL isAnimation;
+@property (assign, nonatomic) BOOL isAnimating;
+
+@property (strong, nonatomic) HQLTimer *animationLabelTimer;
 
 @end
 
@@ -46,30 +60,7 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    UIImageView *imageView = nil;
-    if (self.image) {
-        [self setImageViewFrameWithImage:self.image];
-        imageView = self.imageView;
-    }
-    
-    UILabel *titleLabel = nil;
-    if (self.title) {
-        [self setTitleLabelFrame];
-        titleLabel = self.titleLabel;
-    }
-    
-//    WKWebView *animationWebView = nil;
-    if (self.gifData) {
-        [self setAnimationWebViewFrame];
-    }
-    
-    // 计算y
-    CGFloat totalHeight = CGRectGetHeight(imageView.frame) + CGRectGetHeight(titleLabel.frame) + kMargin;
-    CGFloat imageViewY = (self.frame.size.height - totalHeight) * 0.5;
-    CGFloat titleLabelY = imageViewY + totalHeight - CGRectGetHeight(titleLabel.frame);
-    
-    imageView.frame = CGRectMake(imageView.frame.origin.x, imageViewY, imageView.frame.size.width, imageView.frame.size.height);
-    titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabelY, titleLabel.frame.size.width, titleLabel.frame.size.height);
+    [self calculateFrame];
 }
 
 #pragma mark - event
@@ -80,57 +71,244 @@
     }
 }
 
-- (void)setAnimationWebViewFrame {
-    CGFloat webViewW = [self imageViewWidth];
-    CGFloat webViewH = [self imageViewWidth];
-    CGFloat webViewX = (self.frame.size.width - webViewW) * 0.5;
-    CGFloat webViewY = (self.frame.size.height - webViewH) * 0.5;
-    self.animationWebView.frame = CGRectMake(webViewX, webViewY, webViewW, webViewH);
-}
-
-- (void)setTitleLabelFrame {
+// 计算frame
+- (void)calculateFrame {
     
-    self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x, self.titleLabel.frame.origin.y, self.frame.size.width - (2 * kMargin), self.titleLabel.frame.size.height);
-    [self.titleLabel sizeToFit];
-    CGFloat titleLabelX = (self.frame.size.width - self.titleLabel.frame.size.width) * 0.5;
+    // 根据当前显示的状态 对需要显示的View 设置frame
+    switch ([self getCurrentStatus]) {
+        case HQLEmptyViewDefault: {
+            
+            UILabel *titleLabel = nil;
+            if (self.title) {
+                titleLabel = self.titleLabel;
+            }
+            
+            UIImageView *imageView = nil;
+            if (self.image) {
+                // 根据Image的比例来设置imageView的宽高
+                CGFloat imageViewW = [self defalutWidth];
+                CGFloat imageViewH = (imageViewW * self.image.size.height) / self.image.size.width;
+                self.imageView.frame = CGRectMake(0, 0, imageViewW, imageViewH);
+                imageView = self.imageView;
+            }
+            
+            [self calculateFrameWithView:imageView label:titleLabel];
+            break;
+        }
+        case HQLEmptyViewLoadingAndShowGif: {
+            // 到这个里的时候 ---> GIFImageView的size已经设置好了
+            [self calculateFrameWithView:self.gifImageView label:self.animationLabel];
+            break;
+        }
+        case HQLEmptyViewLoadingAndShowIndicator: {
+            [self calculateFrameWithView:self.indicatorView label:self.animationLabel];
+            break;
+        };
+    }
+}
+
+// 计算frame值 ---> 因为都大同小异 所以就抽取出来
+- (void)calculateFrameWithView:(UIView *)view label:(UILabel *)label {
+    [label setFrame:CGRectMake(0, 0, [self labelDefalutWidth], 1000)];
+    [label sizeToFit];
     
-    [self.titleLabel setFrame:CGRectMake(titleLabelX, 0, self.titleLabel.frame.size.width, self.titleLabel.frame.size.height)];
+    CGFloat totalHeight = CGRectGetHeight(view.frame) + kMargin + CGRectGetHeight(label.frame);
+    
+    CGFloat imageViewY = (self.frame.size.height - totalHeight) * 0.5;
+    CGFloat imageViewX = (self.frame.size.width - view.frame.size.width) * 0.5;
+    CGFloat titleLabelY = imageViewY + kMargin + CGRectGetHeight(view.frame);
+    CGFloat titleLabelX = (self.frame.size.width - label.frame.size.width) * 0.5;
+    
+    [view setFrame:CGRectMake(imageViewX, imageViewY, view.frame.size.width, view.frame.size.height)];
+    
+    [label setFrame:CGRectMake(titleLabelX, titleLabelY, label.frame.size.width, label.frame.size.height)];
 }
 
-- (void)setImageViewFrameWithImage:(UIImage *)image {
-    // 根据Image的比例来设置imageView的宽高
-    // 宽度固定
-    CGFloat imageViewW = [self imageViewWidth];
-    CGFloat imageViewH = (imageViewW * image.size.height) / image.size.width;
-    CGFloat imageViewX = (self.frame.size.width - imageViewW) * 0.5;
-    self.imageView.frame = CGRectMake(imageViewX, 0, imageViewW, imageViewH);
+- (CGFloat)labelDefalutWidth {
+    return self.frame.size.width - 2 * kMargin;
 }
 
-- (CGFloat)imageViewWidth {
+- (CGFloat)defalutWidth {
     return  self.frame.size.width * 0.6;
 }
 
-- (void)startGifAnimaion {
-    if (!self.gifData || self.isAnimation) {
-        return;
+- (HQLEmptyViewStatus)getCurrentStatus {
+    // 判断当前的状态
+    if (!self.isAnimating) {
+        // 没有在动画中
+        return HQLEmptyViewDefault;
+    } else {
+        // 有在动画中
+        if (self.gifData || self.gifImageArray) {
+            return HQLEmptyViewLoadingAndShowGif; // 有设置gif则显示gif
+        } else {
+            return HQLEmptyViewLoadingAndShowIndicator; // 没有设置gif,则显示菊花
+        }
     }
-    self.isAnimation = YES;
-    [self.animationWebView setHidden:NO];
-    self.animationWebView.opaque = YES;
-    [self.imageView setHidden:YES];
-    [self.titleLabel setHidden:YES];
-    
-    [self.animationWebView loadData:self.gifData MIMEType:@"image/gif" textEncodingName:nil baseURL:nil];
 }
 
-- (void)endGifAnimation {
-    [self.animationWebView removeFromSuperview];
-    self.animationWebView = nil;
+#pragma mark - loading animation
+
+- (void)startAnimaion {
+    if (self.isAnimating) {
+        return; // 如果正在动画中 则不能继续动画
+    }
+    self.isAnimating = YES;
     
-    self.isAnimation = NO;
+    __weak typeof(self) weakSelf = self;
+    switch ([self getCurrentStatus]) {
+        case HQLEmptyViewDefault: { break; }
+        case HQLEmptyViewLoadingAndShowGif: {
+            // 显示gif
+            if (self.image) {
+                [self.imageView setAlpha:0];
+            }
+            if (self.title) {
+                [self.titleLabel setAlpha:0];
+            }
+            
+            if (self.gifData) {
+                [self.gifImageView setGifData:self.gifData completeBlock:^(CGFloat width, CGFloat height) {
+                    // 根据比例 设置GIFImageView的size
+                    [weakSelf.gifImageView setFrame:CGRectMake(0, 0, [weakSelf defalutWidth], ([weakSelf defalutWidth] * height) / width)];
+                    
+                    // 计算frame
+                    [weakSelf calculateFrame];
+                    
+                    [weakSelf.gifImageView setAlpha:1];
+                    [weakSelf.animationLabel setAlpha:1];
+                    // 开启animationLabel
+                    [weakSelf startAnimationLabel];
+                    [weakSelf.gifImageView startAnimating];
+                }];
+            } else if (self.gifImageArray) {
+                UIImage *image = self.gifImageArray.firstObject;
+                CGFloat imageWidth = [self defalutWidth];
+                CGFloat imageHeight = (imageWidth * image.size.height) / image.size.width;
+                [self.gifImageView setFrame:CGRectMake(0, 0, imageWidth, imageHeight)];
+                [self calculateFrame];
+                
+                [self.gifImageView setAlpha:1];
+                [self.animationLabel setAlpha:1];
+                // 开启animationLabel
+                [self startAnimationLabel];
+                [self.gifImageView startAnimating];
+            }
+            
+            break;
+        }
+        case HQLEmptyViewLoadingAndShowIndicator: {
+            
+            [self calculateFrame];
+            
+            if (self.image) {
+                if (self.title) {
+                    [self.titleLabel setAlpha:0];
+                }
+                
+                [UIView animateWithDuration:0.3 animations:^{
+                    weakSelf.imageView.transform = CGAffineTransformMakeScale(0.1, 0.1);
+                } completion:^(BOOL finished) {
+                    [weakSelf.animationLabel setAlpha:1];
+                    [weakSelf.indicatorView setAlpha:1];
+                    
+                    [weakSelf.indicatorView startAnimating];
+                    [weakSelf startAnimationLabel];
+                    
+                    [weakSelf.imageView setAlpha:0];
+                }];
+            } else if (self.title) {
+                [UIView animateWithDuration:0.3 animations:^{
+                    weakSelf.titleLabel.transform = CGAffineTransformMakeScale(0.1, 0.1);
+                } completion:^(BOOL finished) {
+                    [weakSelf.animationLabel setAlpha:1];
+                    [weakSelf.indicatorView setAlpha:1];
+                    
+                    [weakSelf.indicatorView startAnimating];
+                    [weakSelf startAnimationLabel];
+                    
+                    [weakSelf.titleLabel setAlpha:0];
+                }];
+            } else {
+                [self.animationLabel setAlpha:1];
+                [self.indicatorView setAlpha:1];
+                
+                [self.indicatorView startAnimating];
+                [self startAnimationLabel];
+            }
+            
+            break;
+        }
+    }
+}
+
+- (void)stopAnimation {
+    self.isAnimating = NO; // 调用这个方法 则表明需要结束动画
     
-    [self.imageView setHidden:NO];
-    [self.titleLabel setHidden:NO];
+    // 停止动画
+    if (self.gifData || self.gifImageArray) {
+        [self.gifImageView stopAnimating];
+        self.gifImageView.animationImages = nil;
+        [self.gifImageView setAlpha:0];
+    } else {
+        [self.indicatorView stopAnimating];
+        [self.indicatorView setAlpha:0];
+    }
+    [self stopAnimationLabel];
+    [self.animationLabel setAlpha:0];
+    
+    if (self.image) {
+        [self.imageView setAlpha:1];
+        [self.imageView setTransform:CGAffineTransformMakeScale(1, 1)];
+    }
+    if (self.title) {
+        [self.titleLabel setAlpha:1];
+        [self.titleLabel setTransform:CGAffineTransformMakeScale(1, 1)];
+    }
+    
+    [self calculateFrame];
+}
+
+#pragma mark - animation label
+
+// 开启 animationLabel 的动画
+- (void)startAnimationLabel {
+    self.animationLabelTimer = [HQLTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(labelAnimation) userInfo:nil repeats:YES];
+    [self.animationLabelTimer reStart];
+}
+
+// animationLabel 执行的动画
+- (void)labelAnimation {
+    timerCount++;
+    if (timerCount % 4 == 0) {
+        if (self.animationTitle) {
+            self.animationLabel.text = self.animationTitle;
+        } else {
+            self.animationLabel.text = kAnimationLabelTitle;
+        }
+    } else {
+        self.animationLabel.text = [self.animationLabel.text stringByAppendingString:@"."];
+    }
+    
+    if (self.gifData) {
+        [self calculateFrameWithView:self.gifImageView label:self.animationLabel];
+    } else {
+        [self calculateFrameWithView:self.indicatorView label:self.animationLabel];
+    }
+}
+
+// animationLabel停止动画
+- (void)stopAnimationLabel {
+    [self.animationLabelTimer stop];
+    [self.animationLabelTimer invalidate];
+    self.animationLabelTimer = nil;
+    
+    timerCount = 0;
+    if (self.animationTitle) {
+        self.animationLabel.text = self.animationTitle;
+    } else {
+        self.animationLabel.text = kAnimationLabelTitle;
+    }
 }
 
 #pragma mark - setter 
@@ -138,7 +316,6 @@
 - (void)setImage:(UIImage *)image {
     _image = image;
     self.imageView.image = image;
-    [self setImageViewFrameWithImage:image];
 }
 
 - (void)setTitle:(NSString *)title {
@@ -146,12 +323,24 @@
     self.titleLabel.text = title;
 }
 
+- (void)setAnimationTitle:(NSString *)animationTitle {
+    _animationTitle = animationTitle;
+    self.animationLabel.text = animationTitle;
+}
+
+- (void)setTitleColor:(UIColor *)titleColor {
+    _titleColor = titleColor;
+    [self.titleLabel setTextColor:titleColor];
+    [self.animationLabel setTextColor:titleColor];
+}
+
 #pragma mark - getter
 
+// 显示title
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
-        [_titleLabel setTextColor:[UIColor blackColor]];
+        [_titleLabel setTextColor:[UIColor grayColor]];
         [_titleLabel setFont:[UIFont systemFontOfSize:14]];
         [_titleLabel setUserInteractionEnabled:YES];
         [_titleLabel setNumberOfLines:0];
@@ -161,6 +350,7 @@
     return _titleLabel;
 }
 
+// 显示Image
 - (UIImageView *)imageView {
     if (!_imageView) {
         _imageView = [[UIImageView alloc] init];
@@ -170,19 +360,42 @@
     return _imageView;
 }
 
-- (UIWebView *)animationWebView {
-    if (!_animationWebView) {
-        _animationWebView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, [self imageViewWidth], [self imageViewWidth])];
-        _animationWebView.scalesPageToFit = YES;
-        _animationWebView.scrollView.scrollEnabled = NO;
-//        _animationWebView.scrollView.showsVerticalScrollIndicator = NO;
-//        _animationWebView.scrollView.showsHorizontalScrollIndicator = NO;
-        _animationWebView.opaque=NO;
-        [_animationWebView setBackgroundColor:[UIColor clearColor]];
-        [_animationWebView setHidden:YES];
-        [self addSubview:_animationWebView];
+// 需要显示gif的View
+- (UIImageView *)gifImageView {
+    if (!_gifImageView) {
+        _gifImageView = [[UIImageView alloc] init];
+        [_gifImageView setAlpha:0];
+        [self addSubview:_gifImageView];
     }
-    return _animationWebView;
+    return _gifImageView;
+}
+
+// 网络指示器
+- (UIActivityIndicatorView *)indicatorView {
+    if (!_indicatorView) {
+        _indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        _indicatorView.hidesWhenStopped = YES;
+        _indicatorView.color = [UIColor lightGrayColor];
+        [_indicatorView setAlpha:0];
+        [self addSubview:_indicatorView];
+    }
+    return _indicatorView;
+}
+
+- (UILabel *)animationLabel {
+    if (!_animationLabel) {
+        _animationLabel = [[UILabel alloc] init];
+        [_animationLabel setTextColor:[UIColor grayColor]];
+        [_animationLabel setFont:[UIFont systemFontOfSize:14]];
+        [_animationLabel setUserInteractionEnabled:YES];
+        [_animationLabel setNumberOfLines:0];
+        [_animationLabel setTextAlignment:NSTextAlignmentCenter];
+        [_animationLabel setText:kAnimationLabelTitle];
+        [_animationLabel setAlpha:0];
+        
+        [self addSubview:_animationLabel];
+    }
+    return _animationLabel;
 }
 
 @end

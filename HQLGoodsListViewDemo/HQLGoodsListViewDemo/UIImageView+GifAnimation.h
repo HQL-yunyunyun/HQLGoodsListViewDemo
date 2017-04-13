@@ -11,6 +11,6 @@
 @interface UIImageView (GifAnimation)
 
 // 会自适应高度
-- (void)setGifData:(NSData *)gifData;
+- (void)setGifData:(NSData *)gifData completeBlock:(void(^)(CGFloat width, CGFloat height))completeBlock;
 
 @end

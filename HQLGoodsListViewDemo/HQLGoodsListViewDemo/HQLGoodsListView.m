@@ -204,10 +204,18 @@
         
         rightTableView.emptyView.gifData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"common_loading_larger@3" ofType:@"gif"]];
         
+//        rightTableView.emptyViewImage = [UIImage imageNamed:@"emoticon_cry"];
+        
         __weak typeof(rightTableView) weakRightTableView = rightTableView;
+        static NSInteger count = 1;
         rightTableView.emptyTapBlock = ^{
             NSLog(@"tap right table view");
-            [weakRightTableView.emptyView startGifAnimaion];
+            if (count % 2 == 0) {
+                [weakRightTableView.emptyView stopAnimation];
+            } else {
+                [weakRightTableView.emptyView startAnimaion];
+            }
+            count++;
         };
         rightTableView.isUseEmptyView = YES;
         rightTableView.emptyViewTitle = @"仓库为空哦，请添加商品啦，喵";
