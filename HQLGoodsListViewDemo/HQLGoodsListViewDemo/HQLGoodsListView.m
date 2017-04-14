@@ -202,18 +202,18 @@
         rightTableView.separatorInset = UIEdgeInsetsMake(0, 10, 0, 0);
         _rightTableView = rightTableView;
         
-        rightTableView.emptyView.gifData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"common_loading_larger@3" ofType:@"gif"]];
+        rightTableView.emptyViewGifData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"common_loading_larger@3" ofType:@"gif"]];
         
 //        rightTableView.emptyViewImage = [UIImage imageNamed:@"emoticon_cry"];
         
         __weak typeof(rightTableView) weakRightTableView = rightTableView;
-        static NSInteger count = 1;
+        static NSInteger count = 0;
         rightTableView.emptyTapBlock = ^{
             NSLog(@"tap right table view");
             if (count % 2 == 0) {
-                [weakRightTableView.emptyView stopAnimation];
+                [weakRightTableView emptyViewStartAnimation];
             } else {
-                [weakRightTableView.emptyView startAnimaion];
+                [weakRightTableView emptyViewStopAnimation];
             }
             count++;
         };

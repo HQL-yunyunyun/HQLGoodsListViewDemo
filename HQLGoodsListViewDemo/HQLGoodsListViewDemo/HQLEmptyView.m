@@ -314,21 +314,33 @@ typedef enum {
 #pragma mark - setter 
 
 - (void)setImage:(UIImage *)image {
+    if (!image) {
+        return;
+    }
     _image = image;
     self.imageView.image = image;
 }
 
 - (void)setTitle:(NSString *)title {
+    if (!title) {
+        return;
+    }
     _title = title;
     self.titleLabel.text = title;
 }
 
 - (void)setAnimationTitle:(NSString *)animationTitle {
+    if (!animationTitle) {
+        return;
+    }
     _animationTitle = animationTitle;
     self.animationLabel.text = animationTitle;
 }
 
 - (void)setTitleColor:(UIColor *)titleColor {
+    if (!titleColor) {
+        return;
+    }
     _titleColor = titleColor;
     [self.titleLabel setTextColor:titleColor];
     [self.animationLabel setTextColor:titleColor];

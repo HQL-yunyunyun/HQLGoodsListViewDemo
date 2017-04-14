@@ -9,18 +9,7 @@
 #import "UITableView+EmptyView.h"
 #import <objc/runtime.h>
 
-static const NSString *HQLEmptyViewImageKey = @"HQLEmptyViewImageKey";
-static const NSString *HQLEmptyViewTitleKey = @"HQLEmptyViewTitleKey";
-static const NSString *HQLEmptyViewTapBlockKey= @"HQLEmptyViewTapBlockKey";
-static const NSString *HQLIsUseEmptyViewKey = @"HQLIsUseEmptyViewKey";
-static const NSString *HQLEmptyViewKey = @"HQLEmptyViewKey";
 static const NSString *HQLReloadDataCompleteBlock = @"HQLReloadDataCompleteBlock";
-static const NSString *HQLEmptyViewGifData = @"HQLEmptyViewGifData";
-static const NSString *HQLEmptyViewGifImageArray = @"HQLEmptyViewGifImageArray";
-static const NSString *HQLEmptyViewAnimationTitle = @"HQLEmptyViewAnimationTitle";
-static const NSString *HQLEmptyViewTitleColor = @"HQLEmptyViewTitleColor";
-
-#define kEmptyViewTag 1101
 
 @implementation UITableView (EmptyView)
 
@@ -31,21 +20,9 @@ static const NSString *HQLEmptyViewTitleColor = @"HQLEmptyViewTitleColor";
     Method fromMethod = class_getInstanceMethod([self class], @selector(reloadData));
     Method toMethod = class_getInstanceMethod([self class], @selector(HQL_reloadData));
     method_exchangeImplementations(fromMethod, toMethod);
-    
-    Method layoutFromMethod = class_getInstanceMethod([self class], @selector(layoutSubviews));
-    Method layoutToMethod = class_getInstanceMethod([self class], @selector(HQL_layoutSubViews));
-    method_exchangeImplementations(layoutFromMethod, layoutToMethod);
-    
 }
 
 #pragma mark - method swizzling
-
-- (void)HQL_layoutSubViews {
-    [self HQL_layoutSubViews];
-    
-    // 设置empty的frame
-    self.emptyView.frame = self.frame;
-}
 
 - (void)HQL_reloadData {
     [self HQL_reloadData];
@@ -66,7 +43,11 @@ static const NSString *HQLEmptyViewTitleColor = @"HQLEmptyViewTitleColor";
     }
     
     // 只有符合这三个条件才会显示emptyView
-    [self.emptyView setHidden:!(self.isUseEmptyView && isNoHeaderOrFooterView && isDataEmpty)];
+    if (self.isUseEmptyView && isNoHeaderOrFooterView && isDataEmpty) {
+        [self showEmptyView];
+    } else {
+        [self hideEmptyView];
+    }
     
     if (self.reloadDataCompleteBlock) {
         // 只有符合这两个条件才表示没有数据 ---> row的总数量为0 且 headerView和FooterView的高都不大于1
@@ -74,81 +55,13 @@ static const NSString *HQLEmptyViewTitleColor = @"HQLEmptyViewTitleColor";
     }
 }
 
-- (void)emptyViewStartAnimation {
-    [self.emptyView startAnimaion];
-}
-
-- (void)emptyViewStopAnimation {
-    [self.emptyView stopAnimation];
-}
-
-#pragma mark - setter 
-
-- (void)setEmptyView:(HQLEmptyView *)emptyView {
-    if (emptyView.tag == kEmptyViewTag) {
-        objc_setAssociatedObject(self, &HQLEmptyViewKey, emptyView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
-}
-
-- (void)setEmptyViewImage:(UIImage *)emptyViewImage {
-    self.emptyView.image = emptyViewImage;
-    objc_setAssociatedObject(self, &HQLEmptyViewImageKey, emptyViewImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (void)setEmptyViewTitle:(NSString *)emptyViewTitle {
-    self.emptyView.title = emptyViewTitle;
-    objc_setAssociatedObject(self, &HQLEmptyViewTitleKey, emptyViewTitle, OBJC_ASSOCIATION_COPY_NONATOMIC);
-}
-
-- (void)setEmptyTapBlock:(void (^)())emptyTapBlock {
-    self.emptyView.tapBlock = emptyTapBlock;
-    objc_setAssociatedObject(self, &HQLEmptyViewTapBlockKey, emptyTapBlock, OBJC_ASSOCIATION_COPY_NONATOMIC);
-}
-
-- (void)setIsUseEmptyView:(BOOL)isUseEmptyView {
-    objc_setAssociatedObject(self, &HQLIsUseEmptyViewKey, [NSNumber numberWithBool:isUseEmptyView], OBJC_ASSOCIATION_ASSIGN);
-}
+#pragma mark - setter
 
 - (void)setReloadDataCompleteBlock:(void (^)(BOOL))reloadDataCompleteBlock {
     objc_setAssociatedObject(self, &HQLReloadDataCompleteBlock, reloadDataCompleteBlock, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
 #pragma mark - getter
-
-- (UIImage *)emptyViewImage {
-    return objc_getAssociatedObject(self, &HQLEmptyViewImageKey);
-}
-
-- (NSString *)emptyViewTitle {
-    return objc_getAssociatedObject(self, &HQLEmptyViewTitleKey);
-}
-
-- (void (^)())emptyTapBlock {
-    return objc_getAssociatedObject(self, &HQLEmptyViewTapBlockKey);
-}
-
-- (BOOL)isUseEmptyView {
-    return objc_getAssociatedObject(self, &HQLIsUseEmptyViewKey);
-}
-
-- (HQLEmptyView *)emptyView {
-    HQLEmptyView *view = objc_getAssociatedObject(self, &HQLEmptyViewKey);
-    if (view) {
-        return view;
-    } else {
-        HQLEmptyView *emtpyView = [[HQLEmptyView alloc] init];
-        emtpyView.frame = self.bounds;
-        emtpyView.tag = kEmptyViewTag;
-        
-        emtpyView.hidden = YES;
-        emtpyView.title = @"没有数据诶，喵";
-        
-        [self.superview addSubview:emtpyView];
-        [self setEmptyView:emtpyView];
-    }
-    
-    return objc_getAssociatedObject(self, &HQLEmptyViewKey);
-}
 
 - (void (^)(BOOL))reloadDataCompleteBlock {
     return objc_getAssociatedObject(self, &HQLReloadDataCompleteBlock);
