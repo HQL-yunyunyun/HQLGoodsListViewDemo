@@ -27,6 +27,9 @@ static const NSString *HQLEmptyViewTitleColor = @"HQLEmptyViewTitleColor";
 #pragma mark - event
 
 - (void)updateEmptyViewFrame {
+    if (!self.isUseEmptyView) {
+        return;
+    }
     [self emptyView].frame = self.frame;
 }
 
